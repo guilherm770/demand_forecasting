@@ -1,0 +1,35 @@
+stages:
+  download_data:
+    cmd: python3 scripts/download_data.py
+    deps:
+      - scripts/download_data.py
+    outs:
+      - data/raw/train.csv
+      - data/raw/test.csv
+    desc: "Download do dataset do Kaggle"
+    
+  validate_data:
+    cmd: python3 scripts/data_validation.py
+    deps:
+      - scripts/data_validation.py
+      - data/raw/train.csv
+    outs:
+      - data/validation_results/
+    desc: "Validação de qualidade dos dados"
+    
+  process_data:
+    cmd: python3 scripts/process_data.py
+    deps:
+      - scripts/process_data.py
+      - features/base_features.py
+      - data/raw/train.csv
+      - data/raw/test.csv
+    outs:
+      - data/processed/train_processed.parquet
+      - data/processed/test_processed.parquet
+      - data/processed/processing_metadata.yaml
+    params:
+      - features.create_lags
+      - features.lag_periods
+      - features.create_rolling_stats
+    desc: "Feature engineering e processamento de dados"

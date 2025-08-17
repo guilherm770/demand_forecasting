@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / compiled files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+
+# Virtual environments
+.venv/
+env/
+venv/
+/venv
+/env
+/virtualenv
+/virtualenvs
+/pyvenv.cfg
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg
+
+# Editors
+.idea/  # PyCharm
+.vscode/ # VS Code
+.sublime-workspace
+.sublime-project
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IPython notebook files
+.ipynb_checkpoints/
+
+# Database files
+*.sqlite3
+*.db
+*.db-journal
+
+# OS generated files
+.DS_Store
+Thumbs.db

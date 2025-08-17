@@ -1,0 +1,56 @@
+# Add patterns of files dvc should ignore, which could improve
+# the performance. Learn more at
+# https://dvc.org/doc/user-guide/dvcignore
+
+# 1. Dados temporários e intermediários
+/data/temp/
+/data/interim/
+*.tmp
+*.temp
+
+# 2. Artefatos de treinamento de modelos (versionados separadamente)
+/models/
+!/models/baseline/  # Exceto se tiver modelos baseline versionados
+
+# 3. Logs e arquivos de sistema
+logs/
+*.log
+*.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# 4. Ambientes virtuais e dependências
+.venv/
+venv/
+env/
+.pyenv/
+.python-version
+
+# 5. Saídas de IDEs e editores
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+
+# 6. Arquivos de cache do DVC e metadados internos
+.dvc/tmp
+.dvc/cache
+.dvc/state
+.dvc/state-journal
+.dvc/state-wal
+
+# 7. Arquivos de configuração local (não devem ser versionados)
+/config/local/
+*.local.yaml
+
+# 8. Arquivos de dados grandes não controlados
+*.hdf5
+*.bin
+*.zip
+*.tar.gz
+
+# 9. Exceções importantes - NÃO ignore estes:
+!data/raw/
+!data/processed/
+!features/
+!scripts/
