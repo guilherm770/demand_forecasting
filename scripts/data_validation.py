@@ -155,8 +155,5 @@ def main():
         except Exception as e2:
             logger.error(f"Não foi possível escrever {OUT_FILE}: {e2}")
 
-    # Retorna código de saída conforme sucesso/fracasso (DVC verá o arquivo de qualquer forma)
-    exit(0 if bool(getattr(result, "success", False)) else 1)
-
 if __name__ == "__main__":
     main()

@@ -206,7 +206,7 @@ class DataProcessor:
             output_dir.mkdir(parents=True, exist_ok=True)
             
             # Salvar dados de treino
-            train_output_path = output_dir / self.config['output']['train_output']
+            train_output_path = output_dir/self.config['output']['train_output']
             df_train.to_parquet(
                 train_output_path,
                 index=False,
