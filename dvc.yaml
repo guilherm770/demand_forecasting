@@ -14,7 +14,7 @@ stages:
       - scripts/data_validation.py
       - data/raw/train.csv
     outs:
-      - data/validation_results/
+      - data/validation_results/summary.json
     desc: "Validação de qualidade dos dados"
     
   process_data:
