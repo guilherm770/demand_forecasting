@@ -49,3 +49,6 @@ htmlcov/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# DVC internals
+.dvc/config
