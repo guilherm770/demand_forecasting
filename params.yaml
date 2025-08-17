@@ -1,0 +1,17 @@
+# params.yaml
+features:
+  create_lags: true
+  lag_periods: [1, 7, 30]
+  create_rolling_stats: true
+  rolling_windows: [7, 14, 30]   # sugiro rastrear também
+validation:
+  run_validation: true
+  fail_on_validation_error: true
+input:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+output:
+  processed_dir: data/processed
+  train_output: train_processed.parquet
+  test_output: test_processed.parquet
+  metadata_output: processing_metadata.yaml

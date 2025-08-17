@@ -32,4 +32,5 @@ stages:
       - features.create_lags
       - features.lag_periods
       - features.create_rolling_stats
+      - features.rolling_windows
     desc: "Feature engineering e processamento de dados"

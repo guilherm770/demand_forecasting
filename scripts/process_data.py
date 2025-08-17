@@ -322,9 +322,8 @@ class DataProcessor:
 def main():
     """Função principal que executa o pipeline de processamento."""
     try:
-        processor = DataProcessor()
+        processor = DataProcessor(config_path="params.yaml")
         processor.run_full_pipeline()
-        
     except Exception as e:
         logger.error(f"Erro crítico no processamento: {e}")
         sys.exit(1)
