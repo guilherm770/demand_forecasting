@@ -25,7 +25,7 @@ dvc push
 
 # Commit das mudanças
 #echo "💾 Versionando mudanças..."
-#git add .
+#git add dvc.lock
 #git commit -m "Pipeline executado - $(date '+%Y-%m-%d %H:%M:%S')"
 
 echo "✅ Pipeline concluído e versionado!"
