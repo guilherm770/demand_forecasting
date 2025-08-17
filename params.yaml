@@ -3,7 +3,7 @@ features:
   create_lags: true
   lag_periods: [1, 7, 30]
   create_rolling_stats: true
-  rolling_windows: [7, 14, 30]   # sugiro rastrear também
+  rolling_windows: [7, 14, 30]
 validation:
   run_validation: true
   fail_on_validation_error: true
