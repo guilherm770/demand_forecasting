@@ -1,9 +1,10 @@
-# params.yaml
 features:
+  enable_temporal_components: true
   create_lags: true
   lag_periods: [1, 7, 30]
   create_rolling_stats: true
   rolling_windows: [7, 14, 30]
+  create_statistical: true
 validation:
   run_validation: true
   fail_on_validation_error: true

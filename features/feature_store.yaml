@@ -1,0 +1,112 @@
+base:
+  temporal:
+    - name: year
+      source: base_features
+      type: numeric
+      description: Ano da data da venda
+    - name: month
+      source: base_features
+      type: numeric
+      description: Mês da data da venda
+    - name: day
+      source: base_features
+      type: numeric
+      description: Dia do mês
+    - name: day_of_week
+      source: base_features
+      type: numeric
+      description: Dia da semana (0=Segunda, 6=Domingo)
+    - name: day_of_year
+      source: base_features
+      type: numeric
+      description: Dia do ano
+    - name: week_of_year
+      source: base_features
+      type: numeric
+      description: Semana ISO do ano
+    - name: month_sin
+      source: base_features
+      type: numeric
+      description: Codificação cíclica do mês (seno)
+    - name: month_cos
+      source: base_features
+      type: numeric
+      description: Codificação cíclica do mês (cosseno)
+    - name: day_of_week_sin
+      source: base_features
+      type: numeric
+      description: Codificação cíclica do dia da semana (seno)
+    - name: day_of_week_cos
+      source: base_features
+      type: numeric
+      description: Codificação cíclica do dia da semana (cosseno)
+    - name: is_weekend
+      source: base_features
+      type: binary
+      description: Indicador de final de semana
+    - name: is_month_start
+      source: base_features
+      type: binary
+      description: Indicador de início de mês
+    - name: is_month_end
+      source: base_features
+      type: binary
+      description: Indicador de fim de mês
+
+  categorical:
+    - name: store_*
+      source: base_features
+      type: one-hot
+      description: Codificação one-hot da loja
+    - name: item_*
+      source: base_features
+      type: one-hot
+      description: Codificação one-hot do item
+
+  interaction:
+    - name: store_item
+      source: base_features
+      type: categorical
+      description: Identificador único de combinação loja-item
+    - name: store_month
+      source: base_features
+      type: categorical
+      description: Combinação loja-mês
+    - name: item_month
+      source: base_features
+      type: categorical
+      description: Combinação item-mês
+    - name: store_dow
+      source: base_features
+      type: categorical
+      description: Combinação loja-dia da semana
+
+temporal:
+  - name: quarter
+    source: temporal_features
+    type: categorical
+    description: Trimestre da venda
+  - name: is_holiday
+    source: temporal_features
+    type: binary
+    description: Indicador de feriado
+
+lags:
+  - name: sales_lag_7
+    source: lag_features
+    type: numeric
+    description: Vendas defasadas de 7 dias
+  - name: sales_roll_mean_30
+    source: lag_features
+    type: numeric
+    description: Média móvel de 30 dias das vendas
+
+statistical:
+  - name: sales_mean_store
+    source: statistical_features
+    type: numeric
+    description: Média de vendas por loja
+  - name: sales_std_item
+    source: statistical_features
+    type: numeric
+    description: Desvio padrão das vendas por item

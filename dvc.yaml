@@ -22,6 +22,10 @@ stages:
     deps:
       - scripts/process_data.py
       - features/base_features.py
+      - features/lag_features.py
+      - features/temporal_features.py
+      - features/statistical_features.py
+      - features/feature_store.yaml
       - data/raw/train.csv
       - data/raw/test.csv
     outs:
@@ -29,8 +33,10 @@ stages:
       - data/processed/test_processed.parquet
       - data/processed/processing_metadata.yaml
     params:
+      - features.enable_temporal_components
       - features.create_lags
       - features.lag_periods
       - features.create_rolling_stats
       - features.rolling_windows
+      - features.create_statistical
     desc: "Feature engineering e processamento de dados"
