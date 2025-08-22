@@ -38,7 +38,7 @@ def main():
         if test_df.empty:
             break
         
-        pipe = build_pipeline(tr["model"], tr.copy(), num_cols, cat_cols)
+        pipe = build_pipeline(tr["model"], params.copy(), num_cols, cat_cols)
         pipe.fit(train_df[all_cols], train_df[target])
 
         preds = pipe.predict(test_df[all_cols])

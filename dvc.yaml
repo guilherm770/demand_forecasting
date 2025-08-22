@@ -71,18 +71,18 @@ stages:
           cache: false
     desc: "Avaliação em holdout/teste processado"
 
-  backtest:
-    cmd: python3 -m scripts.backtest
-    deps:
-      - scripts/backtest.py
-      - scripts/train.py
-      - scripts/utils.py
-      - scripts/metrics.py
-      - data/processed/train_processed.parquet
-      - params.yaml
-    metrics:
-      - artifacts/metrics/backtest_summary.json:
-          cache: false
-    outs:
-      - artifacts/backtests/metrics_by_split.csv
-    desc: "Walk-forward/backtesting com janelas deslizantes"
+  #backtest:
+  #  cmd: python3 -m scripts.backtest
+  #  deps:
+  #    - scripts/backtest.py
+  #    - scripts/train.py
+  #    - scripts/utils.py
+  #    - scripts/metrics.py
+  #    - data/processed/train_processed.parquet
+  #    - params.yaml
+  #  metrics:
+  #    - artifacts/metrics/backtest_summary.json:
+  #        cache: false
+  #  outs:
+  #    - artifacts/backtests/metrics_by_split.csv
+  #  desc: "Walk-forward/backtesting com janelas deslizantes"

@@ -56,10 +56,11 @@ def sample_data_if_needed(df: pd.DataFrame, params: dict) -> pd.DataFrame:
     
     return df
 
-def build_pipeline(model_name: str, training_config: dict, numeric_cols, cat_cols):
+def build_pipeline(model_name: str, params: dict, numeric_cols, cat_cols):
     from sklearn.ensemble import RandomForestRegressor
     from xgboost import XGBRegressor
 
+    training_config = params.get("training")
     # Usar StandardScaler mais simples para desenvolvimento
     if training_config.get("development_mode"):
         scaler = StandardScaler(with_mean=False)
@@ -76,9 +77,10 @@ def build_pipeline(model_name: str, training_config: dict, numeric_cols, cat_col
 
     if model_name == "rf":
         rf_params = training_config.get("rf")
+        print(rf_params)
         # Ajustar n_jobs para não sobrecarregar
         max_jobs = psutil.cpu_count() - 1 if psutil.cpu_count() > 1 else 1
-        if rf_params.get("n_jobs", -1) == -1 or rf_params.get("n_jobs", 1) > max_jobs:
+        if rf_params.get("n_jobs") == -1 or rf_params.get("n_jobs") > max_jobs:
             rf_params["n_jobs"] = max_jobs
             print(f"🔧 Ajustado n_jobs para {max_jobs}")
         
