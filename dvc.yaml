@@ -1,6 +1,6 @@
 stages:
   download_data:
-    cmd: python3 scripts/download_data.py
+    cmd: python3 -m scripts.download_data
     deps:
       - scripts/download_data.py
     outs:
@@ -9,7 +9,7 @@ stages:
     desc: "Download do dataset do Kaggle"
     
   validate_data:
-    cmd: python3 scripts/data_validation.py
+    cmd: python3 -m scripts.data_validation
     deps:
       - scripts/data_validation.py
       - data/raw/train.csv
@@ -18,7 +18,7 @@ stages:
     desc: "Validação de qualidade dos dados"
     
   process_data:
-    cmd: python3 scripts/process_data.py
+    cmd: python3 -m scripts.process_data
     deps:
       - scripts/process_data.py
       - features/base_features.py
@@ -40,3 +40,49 @@ stages:
       - features.rolling_windows
       - features.create_statistical
     desc: "Feature engineering e processamento de dados"
+
+  train_model:
+    cmd: python3 -m scripts.train
+    deps:
+      - scripts/train.py
+      - scripts/utils.py
+      - scripts/metrics.py
+      - data/processed/train_processed.parquet
+      - params.yaml
+    outs:
+      - artifacts/models/
+    metrics:
+      - artifacts/metrics/cv_metrics.json:
+          cache: false
+      - artifacts/metrics/holdout_metrics.json:
+          cache: false
+    desc: "Treinamento otimizado para recursos limitados"
+
+  evaluate_model:
+    cmd: python3 -m scripts.evaluate
+    deps:
+      - scripts/evaluate.py
+      - scripts/utils.py
+      - scripts/metrics.py
+      - data/processed/test_processed.parquet
+      - artifacts/models/
+    metrics:
+      - artifacts/metrics/test_metrics.json:
+          cache: false
+    desc: "Avaliação em holdout/teste processado"
+
+  backtest:
+    cmd: python3 -m scripts.backtest
+    deps:
+      - scripts/backtest.py
+      - scripts/train.py
+      - scripts/utils.py
+      - scripts/metrics.py
+      - data/processed/train_processed.parquet
+      - params.yaml
+    metrics:
+      - artifacts/metrics/backtest_summary.json:
+          cache: false
+    outs:
+      - artifacts/backtests/metrics_by_split.csv
+    desc: "Walk-forward/backtesting com janelas deslizantes"

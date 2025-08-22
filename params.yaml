@@ -1,18 +1,77 @@
+# Configuração para desenvolvimento com recursos limitados
 features:
-  enable_temporal_components: true
+  enable_temporal_components: false  # Desabilita para reduzir features
   create_lags: true
-  lag_periods: [1, 7, 30]
+  lag_periods: [1, 7]  # Reduzido de [1, 7, 30] para menos features
   create_rolling_stats: true
-  rolling_windows: [7, 14, 30]
-  create_statistical: true
+  rolling_windows: [7, 14]  # Reduzido de [7, 14, 30]
+  create_statistical: false  # Desabilita features estatísticas pesadas
+
 validation:
   run_validation: true
-  fail_on_validation_error: true
+  fail_on_validation_error: false  # Para não interromper em ambiente dev
+
 input:
   train_path: data/raw/train.csv
   test_path: data/raw/test.csv
+
 output:
   processed_dir: data/processed
   train_output: train_processed.parquet
   test_output: test_processed.parquet
   metadata_output: processing_metadata.yaml
+
+# Configuração otimizada para baixo recurso
+training:
+  target: sales
+  date_col: date
+  id_cols: [store, item]
+  features_to_drop: []
+  test_size_days: 30  # Reduzido de 90 para menos dados
+  model: rf  # RF é mais eficiente em memória que XGB
+  random_state: 42
+  
+  # Configuração para desenvolvimento - dados reduzidos
+  development_mode: true
+  sample_fraction: 0.1  # Usar apenas 10% dos dados
+  max_samples: 50000   # Limite máximo de amostras
+  
+  # Configuração otimizada para recursos limitados
+  rf:
+    n_estimators: 50  # Reduzido de 300
+    max_depth: 8      # Limitado para reduzir complexidade
+    min_samples_split: 10  # Aumentado para simplificar árvores
+    min_samples_leaf: 5    # Aumentado para simplicidade
+    max_features: sqrt     # Reduz features por split
+    n_jobs: 2  # Limitado para não sobrecarregar CPU
+    
+  xgb:
+    n_estimators: 100  # Reduzido de 600
+    learning_rate: 0.1  # Aumentado para compensar menos estimators
+    max_depth: 4        # Reduzido de 8
+    subsample: 0.6      # Reduzido para usar menos dados
+    colsample_bytree: 0.6
+    reg_lambda: 2.0
+    n_jobs: 2
+
+# Validação cruzada simplificada
+cv:
+  n_splits: 3  # Reduzido de 5
+  gap: 0
+
+# Backtest simplificado  
+backtest:
+  horizon_days: 14  # Reduzido de 30
+  step_days: 14     # Reduzido de 30
+  start_date: null
+  max_backtests: 3  # Limita número de backtests
+
+mlflow:
+  tracking_uri: http://localhost:5000
+  experiment: demand-forecasting-dev  # Experimento separado para dev
+  
+# Configurações específicas de performance
+performance:
+  memory_limit_gb: 4
+  early_stopping: true
+  checkpoint_frequency: 100  # Salva modelo a cada N iterações

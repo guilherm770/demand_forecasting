@@ -18,4 +18,5 @@ dvc remote modify minio-storage ssl_verify false
 
 echo "✅ Feature Store configurado com sucesso!"
 echo "🌐 Console MinIO: http://localhost:9101"
+echo "🌐 Console MLflow: http://localhost:5000"
 echo "📊 Usuário: minioadmin | Senha: minioadmin"
