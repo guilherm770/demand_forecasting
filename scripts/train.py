@@ -336,6 +336,9 @@ def main(
                     signature = infer_signature(sample_X, preds_sample)
                 except Exception:
                     pass
+                
+                print("🔎 artifact_uri =", mlflow.get_artifact_uri())
+                mlflow.log_text("ping", "upload_check.txt")
 
                 mlflow.sklearn.log_model(
                     sk_model=pipe,
@@ -361,6 +364,17 @@ def main(
     if holdout_metrics:
         with open("artifacts/metrics/holdout_metrics.json", "w") as f:
             json.dump(holdout_metrics, f, indent=2)
+    
+    models_info_dir = Path("artifacts/model_info")
+    models_info_dir.mkdir(parents=True, exist_ok=True)
+    info_path = models_info_dir / "model_uri.txt"
+    with open(info_path, "w") as f:
+        if mlflow_enabled and run_uri_print:
+            f.write(f"{run_uri_print}\n")
+            f.write(f"tracking_uri={mlflow.get_tracking_uri()}\n")
+        else:
+            f.write("MODEL_NOT_LOGGED\n")
+    print(f"📝 Info do modelo escrita em: {info_path}")
 
     final_memory = psutil.virtual_memory().percent
     print(f"✅ Treinamento concluído!")

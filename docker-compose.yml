@@ -71,8 +71,8 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
-      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
-      AWS_S3_ENDPOINT_URL: http://minio:9000
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9100
+      AWS_S3_ENDPOINT_URL: http://minio:9100
     depends_on:
       postgres:
         condition: service_healthy

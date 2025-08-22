@@ -49,8 +49,6 @@ stages:
       - scripts/metrics.py
       - data/processed/train_processed.parquet
       - params.yaml
-    outs:
-      - artifacts/models/
     metrics:
       - artifacts/metrics/cv_metrics.json:
           cache: false
@@ -65,7 +63,7 @@ stages:
       - scripts/utils.py
       - scripts/metrics.py
       - data/processed/test_processed.parquet
-      - artifacts/models/
+      - artifacts/model_info/model_uri.txt
     metrics:
       - artifacts/metrics/test_metrics.json:
           cache: false
