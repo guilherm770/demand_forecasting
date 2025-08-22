@@ -5,6 +5,8 @@ from datetime import datetime
 import psutil
 import gc
 import warnings
+import tempfile
+import joblib
 
 import numpy as np
 import pandas as pd
@@ -29,7 +31,6 @@ from mlflow.models import infer_signature
 
 # Suprimir warnings de sklearn que estão aparecendo
 warnings.filterwarnings('ignore', message='invalid value encountered in divide')
-
 
 def check_memory_usage():
     """Monitora uso de memória e limpa garbage collection se necessário"""
@@ -338,14 +339,28 @@ def main(
                     pass
                 
                 print("🔎 artifact_uri =", mlflow.get_artifact_uri())
-                mlflow.log_text("ping", "upload_check.txt")
-
-                mlflow.sklearn.log_model(
-                    sk_model=pipe,
-                    artifact_path="model",
-                    signature=signature,
-                    input_example=sample_X.iloc[:5] if len(sample_X) > 5 else sample_X,
-                )
+        
+                try:
+                    # Log model with a try-catch for compatibility
+                    mlflow.sklearn.log_model(
+                        sk_model=pipe,
+                        name="model",
+                        signature=signature,
+                        input_example=sample_X.iloc[:5] if len(sample_X) > 5 else sample_X,
+                    )
+                    print("✅ Model logged successfully")
+                except Exception as e:
+                    print(f"⚠️  Error logging model: {e}")
+                    # Fallback: save model as artifact
+                    try:
+                        import joblib
+                        with tempfile.NamedTemporaryFile(suffix='.joblib', delete=False) as tmp:
+                            joblib.dump(pipe, tmp.name)
+                            mlflow.log_artifact(tmp.name, artifact_path="model")
+                            os.unlink(tmp.name)
+                        print("✅ Model saved as artifact (fallback)")
+                    except Exception as fallback_error:
+                        print(f"❌ Failed to save model as artifact: {fallback_error}")
 
                 # Também subir o params.yaml como artefato leve
                 try:
@@ -371,7 +386,7 @@ def main(
     with open(info_path, "w") as f:
         if mlflow_enabled and run_uri_print:
             f.write(f"{run_uri_print}\n")
-            f.write(f"tracking_uri={mlflow.get_tracking_uri()}\n")
+            f.write(f"tracking_uri={mlflow.get_artifact_uri()}\n")
         else:
             f.write("MODEL_NOT_LOGGED\n")
     print(f"📝 Info do modelo escrita em: {info_path}")

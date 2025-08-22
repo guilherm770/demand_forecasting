@@ -57,7 +57,7 @@ stages:
     desc: "Treinamento otimizado para recursos limitados"
 
   evaluate_model:
-    cmd: python3 -m scripts.evaluate
+    cmd: python3 -m scripts.evaluate --model-uri "$(head -n 1 artifacts/model_info/model_uri.txt)"
     deps:
       - scripts/evaluate.py
       - scripts/utils.py

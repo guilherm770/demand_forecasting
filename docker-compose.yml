@@ -16,7 +16,7 @@ services:
     networks:
       - mlflow-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
@@ -71,8 +71,12 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
-      MLFLOW_S3_ENDPOINT_URL: http://minio:9100
-      AWS_S3_ENDPOINT_URL: http://minio:9100
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      AWS_S3_ENDPOINT_URL: http://minio:9000
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_S3_ADDRESSING_STYLE: path
+      MLFLOW_DISABLE_REQUEST_LOGGING: "true"
+      MLFLOW_TRACKING_INSECURE_TLS: "true"
     depends_on:
       postgres:
         condition: service_healthy
