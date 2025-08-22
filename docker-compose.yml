@@ -66,6 +66,7 @@ services:
       mlflow server
       --backend-store-uri postgresql://mlflow:mlflow@postgres:5432/mlflow
       --default-artifact-root s3://mlflow-artifacts
+      --serve-artifacts
       --host 0.0.0.0
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
